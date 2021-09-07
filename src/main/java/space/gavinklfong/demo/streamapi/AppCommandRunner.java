@@ -1,8 +1,8 @@
 package space.gavinklfong.demo.streamapi;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +100,123 @@ public class AppCommandRunner implements CommandLineRunner {
 //
 //		productsFilterByRangeDate.stream().forEach(System.out::println);
 
+		//Exercise 5 — Get the cheapest products of “Books” category
 
+//		Optional<Product> product = products.stream()
+//				.filter(p -> p.getCategory().equalsIgnoreCase("Books"))
+//				.min(Comparator.comparing(Product::getPrice));
+//
+//		System.out.println(product);
+
+		//Exercise 6 — Get the 3 most recent placed order
+
+//		List<Order> ordersFiltered = orders.stream()
+//				.sorted(Comparator.comparing(Order::getOrderDate).reversed())
+//				.limit(3)
+//				.collect(Collectors.toList());
+//
+//		ordersFiltered.stream().forEach(System.out::println);
+
+		//Exercise 7 — Get a list of orders which were ordered on 15-Mar-2021, log the order records to the console and then return its product list
+
+//		List<Product> productsFiltered = orders.stream()
+//				.filter(o -> o.getOrderDate().isEqual(LocalDate.of(2021, 03, 15)))
+//				.peek(o -> System.out.println(o.toString()))
+//				.flatMap(o -> o.getProducts().stream())
+//				.distinct()
+//				.collect(Collectors.toList());
+//
+//		productsFiltered.stream().forEach(System.out::println);
+
+//		Exercise 8 — Calculate total lump sum of all orders placed in Feb 2021
+
+//		double totalAmountFebruary = orders.stream()
+//				.filter(o -> o.getOrderDate().compareTo(LocalDate.of(2021, 2, 1)) >= 0)
+//				.filter(o -> o.getOrderDate().compareTo(LocalDate.of(2021, 3, 1)) < 0)
+//				.flatMap(o -> o.getProducts().stream())
+//				.mapToDouble(p -> p.getPrice())
+//				.sum();
+//		System.out.println(totalAmountFebruary);
+
+		//Exercise 9 — Calculate order average payment placed on 14-Mar-2021
+
+//		Double result = orders.stream()
+//				.filter(o -> o.getOrderDate().isEqual(LocalDate.of(2021,3,15)))
+//				.flatMap(o -> o.getProducts().stream())
+//				.mapToDouble(p -> p.getPrice())
+//				.average()
+//				.getAsDouble();
+//
+//		System.out.println(result);
+
+
+		//Exercise 10 — Obtain a collection of statistic figures (i.e. sum, average, max, min, count) for all products of category “Books”
+
+
+//		DoubleSummaryStatistics statistics = products.stream()
+//				.filter(p -> p.getCategory().equalsIgnoreCase("Books"))
+//				.mapToDouble(p -> p.getPrice())
+//				.summaryStatistics();
+//
+//		System.out.println(statistics);
+
+//		Exercise 11 — Obtain a data map with order id and order’s product count
+
+//		Map<Long, Integer> dataMap = orders.stream()
+//				.collect(
+//						Collectors.toMap(
+//								order -> order.getId(),
+//								order ->  order.getProducts().size()
+//						)
+//				);
+//
+//		System.out.println(dataMap);
+
+//		Exercise 12 — Produce a data map with order records grouped by customer
+
+//		Map<Customer, List<Order>> dataMap = orders.stream()
+//				.collect(
+//						Collectors.groupingBy(o -> o.getCustomer())
+//				);
+//
+//		System.out.println(dataMap);
+
+
+//		Exercise 13 — Produce a data map with order record and product total sum
+//
+//		Map<Order, Double> dataMap = orders.stream()
+//				.collect(
+//						Collectors.toMap(
+//								Function.identity(),
+//								order -> order.getProducts().stream().mapToDouble(p-> p.getPrice()).sum()
+//						)
+//				);
+//
+//		System.out.println(dataMap);
+
+//		Exercise 14 — Obtain a data map with list of product name by category
+
+//		Map<String, List<String>> dataMap = products.stream()
+//				.collect(
+//						Collectors.groupingBy(
+//								Product::getCategory,
+//								Collectors.mapping(p -> p.getName(), Collectors.toList())
+//						)
+//				);
+//
+//		System.out.println(dataMap);
+
+//		Exercise 15 — Get the most expensive product by category
+
+		Map<String, Optional<Product>> dataMap = products.stream()
+				.collect(
+						Collectors.groupingBy(
+								Product::getCategory,
+								Collectors.maxBy(Comparator.comparing(Product::getPrice))
+						)
+				);
+
+		System.out.println(dataMap);
 	}
 
 }
