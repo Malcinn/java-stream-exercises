@@ -2,4 +2,4 @@
 .idea
 #Build files
 ./build
-./target
+target
